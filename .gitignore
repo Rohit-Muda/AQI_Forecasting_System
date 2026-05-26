@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+node_modules/
+dist/
+.idea/
+.vscode/
+.DS_Store
+*.log
+
+# Dataset is too large for GitHub (~270 MB). Keep locally for training only.
+backend/data/*.csv

@@ -1,0 +1,764 @@
+/* ─── Light theme (default) ─── */
+:root,
+[data-theme="light"] {
+  --bg: #eef4f8;
+  --bg-elevated: #ffffff;
+  --text: #0c1222;
+  --text-secondary: #475569;
+  --border: rgba(15, 23, 42, 0.1);
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(255, 255, 255, 0.6);
+  --input-bg: #ffffff;
+  --shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 12px 40px rgba(15, 23, 42, 0.12);
+  --primary: #0d9488;
+  --primary-hover: #0f766e;
+  --primary-glow: rgba(13, 148, 136, 0.25);
+  --error-bg: #fef2f2;
+  --error-text: #b91c1c;
+  --error-border: #fecaca;
+  --gauge-track: #e2e8f0;
+  --header-bg: rgba(255, 255, 255, 0.72);
+  --ambient-1: rgba(0, 200, 83, 0.12);
+  --ambient-2: rgba(13, 148, 136, 0.15);
+  --ambient-3: rgba(255, 214, 0, 0.1);
+  --nav-active-bg: rgba(13, 148, 136, 0.12);
+  --footer-text: #64748b;
+}
+
+/* ─── Dark theme ─── */
+[data-theme="dark"] {
+  --bg: #0a0f1a;
+  --bg-elevated: #111827;
+  --text: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --border: rgba(148, 163, 184, 0.15);
+  --card-bg: rgba(17, 24, 39, 0.75);
+  --card-border: rgba(148, 163, 184, 0.12);
+  --input-bg: #1e293b;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.5);
+  --primary: #2dd4bf;
+  --primary-hover: #14b8a6;
+  --primary-glow: rgba(45, 212, 191, 0.2);
+  --error-bg: rgba(127, 29, 29, 0.35);
+  --error-text: #fca5a5;
+  --error-border: rgba(248, 113, 113, 0.3);
+  --gauge-track: #334155;
+  --header-bg: rgba(10, 15, 26, 0.8);
+  --ambient-1: rgba(0, 200, 83, 0.08);
+  --ambient-2: rgba(45, 212, 191, 0.1);
+  --ambient-3: rgba(213, 0, 249, 0.06);
+  --nav-active-bg: rgba(45, 212, 191, 0.15);
+  --footer-text: #64748b;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  font-family: "DM Sans", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+  transition: background 0.35s ease, color 0.35s ease;
+}
+
+/* Ambient AQI gradient mesh */
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 10% 0%, var(--ambient-1), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 90% 10%, var(--ambient-2), transparent 50%),
+    radial-gradient(ellipse 50% 30% at 50% 100%, var(--ambient-3), transparent 45%);
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 2.5rem;
+}
+
+/* ─── Header ─── */
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.25rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  background: var(--header-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.header-logo {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.logo-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    #00c853 0deg 72deg,
+    #ffd600 72deg 144deg,
+    #ff9100 144deg 216deg,
+    #ff1744 216deg 288deg,
+    #d500f9 288deg 360deg
+  );
+  animation: spin-slow 24s linear infinite;
+}
+
+.logo-core {
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 2px solid var(--border);
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.header-brand h1 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.header-brand p {
+  margin: 0.1rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.header-nav {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.25rem;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.nav-btn {
+  padding: 0.45rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-btn:hover {
+  color: var(--text);
+}
+
+.nav-btn.is-active {
+  background: var(--nav-active-bg);
+  color: var(--primary);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* Theme toggle */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem 0.35rem 0.35rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--input-bg);
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.theme-toggle-track {
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--gauge-track);
+  position: relative;
+  display: block;
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s ease;
+}
+
+.theme-toggle-thumb.is-dark {
+  transform: translateX(18px);
+  background: linear-gradient(135deg, #818cf8, #6366f1);
+}
+
+/* ─── Layout ─── */
+.layout {
+  display: grid;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (min-width: 920px) {
+  .layout {
+    grid-template-columns: 1fr 360px;
+  }
+}
+
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+/* ─── Form ─── */
+.form {
+  padding: 1.35rem 1.35rem 1.5rem;
+}
+
+.form-intro {
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.form-intro h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+}
+
+.form-intro p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.section {
+  border: none;
+  margin: 0 0 1.15rem;
+  padding: 0;
+}
+
+.section legend {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+  margin-bottom: 0.65rem;
+}
+
+.section-icon {
+  font-size: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+  gap: 0.75rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.8125rem;
+}
+
+.field span {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.field input,
+.field select {
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  background: var(--input-bg);
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.field em {
+  color: var(--error-text);
+  font-size: 0.72rem;
+  font-style: normal;
+}
+
+.form button[type="submit"] {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.85rem 1rem;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 16px var(--primary-glow);
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+
+[data-theme="dark"] .form button[type="submit"] {
+  color: #0a0f1a;
+}
+
+.form button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px var(--primary-glow);
+}
+
+.form button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: wait;
+  transform: none;
+}
+
+/* ─── Result ─── */
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.error {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  background: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
+  border-radius: 12px;
+  font-size: 0.875rem;
+}
+
+.result {
+  padding: 1.35rem;
+  border-top: 3px solid var(--accent, var(--primary));
+  box-shadow: var(--shadow-lg), 0 0 40px var(--accent-glow, transparent);
+}
+
+.result--empty {
+  text-align: center;
+  border-top-color: var(--primary);
+}
+
+.result-placeholder-icon {
+  font-size: 2.5rem;
+  opacity: 0.35;
+  margin-bottom: 0.5rem;
+}
+
+.result--empty h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+}
+
+.result--empty > p {
+  margin: 0 0 1.25rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.result-advice {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--text);
+}
+
+.result-band-desc {
+  margin: 0 0 1rem;
+  font-size: 0.8125rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+/* Gauge */
+.aqi-gauge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.aqi-gauge-ring {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  padding: 10px;
+}
+
+.aqi-gauge-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.aqi-gauge-value {
+  font-size: 2.75rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--gauge-color, var(--text));
+}
+
+.aqi-gauge-unit {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin-top: 0.15rem;
+}
+
+.aqi-gauge-category {
+  margin: 0.5rem 0 0;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--gauge-color, var(--text));
+  text-align: center;
+}
+
+/* AQI scale bar */
+.aqi-scale {
+  width: 100%;
+}
+
+.aqi-scale-bar {
+  position: relative;
+  display: flex;
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.aqi-scale-segment {
+  flex: 1;
+}
+
+.aqi-scale-marker {
+  position: absolute;
+  top: -4px;
+  width: 4px;
+  height: 18px;
+  margin-left: -2px;
+  background: var(--text);
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+  transition: left 0.4s ease;
+}
+
+.aqi-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.35rem;
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+}
+
+/* ─── Guide / About AQI ─── */
+.guide {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.guide-hero {
+  padding: 1.5rem 1.5rem 1.75rem;
+}
+
+.guide-badge {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+  background: var(--nav-active-bg);
+  border-radius: 999px;
+}
+
+.guide-hero h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.guide-hero p {
+  margin: 0 0 0.65rem;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+}
+
+.guide-hero .aqi-scale {
+  margin-top: 1.25rem;
+}
+
+.guide-section h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.15rem;
+}
+
+.guide-lead {
+  margin: 0 0 1rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.band-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.band-card {
+  padding: 1rem 1.1rem;
+  border-left: 4px solid var(--band-color);
+}
+
+.band-card header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.band-range {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--band-color) 20%, transparent);
+  color: var(--band-color);
+}
+
+.band-card h4 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.band-card p {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.band-card footer {
+  font-size: 0.8rem;
+  color: var(--text);
+}
+
+.pollutant-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.pollutant-card {
+  padding: 1rem 1.1rem;
+}
+
+.pollutant-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.pollutant-symbol {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.pollutant-unit {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.pollutant-card h4 {
+  margin: 0 0 0.4rem;
+  font-size: 0.9rem;
+}
+
+.pollutant-card p {
+  margin: 0 0 0.4rem;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.pollutant-impact {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text);
+}
+
+.weather-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.weather-card {
+  padding: 1rem;
+}
+
+.weather-card h4 {
+  margin: 0 0 0.35rem;
+  font-size: 0.9rem;
+  color: var(--primary);
+}
+
+.weather-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.guide-steps {
+  padding: 1.25rem 1.5rem;
+}
+
+.guide-steps h3 {
+  margin: 0 0 1rem;
+}
+
+.guide-steps ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.guide-steps li {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.step-num {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--nav-active-bg);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* Footer */
+.footer {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--footer-text);
+}
+
+@media (max-width: 640px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .header-nav {
+    order: 3;
+    justify-content: center;
+  }
+
+  .theme-toggle {
+    align-self: flex-end;
+  }
+}
