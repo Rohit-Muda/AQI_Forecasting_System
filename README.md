@@ -1,6 +1,6 @@
 # Air Quality Index Forecasting System
 
-Machine learning web application that predicts US Air Quality Index (AQI) from pollutant concentrations, weather conditions, and city location using historical data from Indian cities.
+Machine learning web application that predicts Air Quality Index (AQI) from pollutant concentrations, weather conditions, and city location using historical data from Indian cities.
 
 **Repository:** https://github.com/Rohit-Muda/AQI_Forecasting_System
 
