@@ -61,7 +61,7 @@ function validate(values) {
   return errors;
 }
 
-export default function AQIForm({ onSubmit, loading, onAutofill, onCityChange }) {
+export default function AQIForm({ onSubmit, loading, onCityChange }) {
   const [values, setValues] = useState(emptyValues);
   const [errors, setErrors] = useState({});
   const [cities, setCities] = useState([]);
@@ -114,18 +114,16 @@ export default function AQIForm({ onSubmit, loading, onAutofill, onCityChange })
         });
         setAutofilled(filledKeys);
         setAutofillStatus(data.source || "none");
-        onAutofill?.(data);
       } catch {
         if (autofillAbortRef.current !== token) return;
         setAutofillStatus("none");
-        onAutofill?.({ live_aqi: null });
       } finally {
         if (autofillAbortRef.current === token) {
           setAutofillLoading(false);
         }
       }
     },
-    [onAutofill]
+    []
   );
 
   const set = (key, val) => {
@@ -184,7 +182,7 @@ export default function AQIForm({ onSubmit, loading, onAutofill, onCityChange })
               </span>
             )}
             {section.autofillGroup && autofillStatus === "full" && (
-              <span className="autofill-badge autofill-badge--ok">Live data loaded</span>
+              <span className="autofill-badge autofill-badge--ok">OpenWeatherMap live data loaded</span>
             )}
             {section.autofillGroup && autofillStatus === "partial" && (
               <span className="autofill-badge autofill-badge--partial">Partial live data</span>

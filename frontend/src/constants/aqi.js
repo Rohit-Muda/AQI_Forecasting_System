@@ -49,14 +49,6 @@ export const AQI_BANDS = [
   },
 ];
 
-export const CATEGORY_COLORS = Object.fromEntries(
-  AQI_BANDS.map((b) => [b.category, b.color])
-);
-
-export function getCategoryColor(category) {
-  return CATEGORY_COLORS[category] || "#64748b";
-}
-
 export function getBandForAqi(aqi) {
   const value = Math.max(0, Number(aqi) || 0);
   return (
@@ -65,6 +57,3 @@ export function getBandForAqi(aqi) {
   );
 }
 
-export function aqiToPercent(aqi) {
-  return Math.min(100, Math.max(0, (Number(aqi) / 500) * 100));
-}

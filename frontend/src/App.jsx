@@ -60,7 +60,6 @@ export default function App() {
               <AQIForm
                 onSubmit={handlePredict}
                 loading={loading}
-                onAutofill={() => {}}
                 onCityChange={handleCityChange}
               />
             </div>
@@ -82,7 +81,7 @@ export default function App() {
 
         <footer className="footer">
           <p>
-            US EPA AQI scale · Predictions from XGBoost · Weather via OpenWeatherMap · Air quality via WAQI · Not a substitute for official government air quality alerts
+            US EPA AQI scale · Predictions from XGBoost · Live weather and air quality via OpenWeatherMap · Not a substitute for official government air quality alerts
           </p>
         </footer>
       </div>
