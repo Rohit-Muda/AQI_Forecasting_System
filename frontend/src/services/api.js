@@ -15,6 +15,16 @@ export async function predictAQI(payload) {
   return data;
 }
 
+export async function fetchAutofill(city) {
+  const { data } = await client.get("/autofill", { params: { city } });
+  return data;
+}
+
+export async function fetchForecast(city) {
+  const { data } = await client.get("/forecast", { params: { city } });
+  return data;
+}
+
 export function getErrorMessage(error) {
   const detail = error.response?.data?.detail;
   if (typeof detail === "string") return detail;

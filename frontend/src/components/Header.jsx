@@ -9,10 +9,6 @@ export default function Header({ view, onViewChange, theme, onThemeToggle }) {
   return (
     <header className="header">
       <div className="header-brand">
-        <div className="header-logo" aria-hidden>
-          <span className="logo-ring" />
-          <span className="logo-core" />
-        </div>
         <div>
           <h1>AQI Forecast</h1>
           <p>Machine learning air quality predictions for India</p>

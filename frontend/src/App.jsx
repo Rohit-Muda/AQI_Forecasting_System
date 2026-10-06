@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Header from "./components/Header";
 import AQIForm from "./components/AQIForm";
 import AQIResult from "./components/AQIResult";
+import SHAPBreakdown from "./components/SHAPBreakdown";
+import ForecastChart from "./components/ForecastChart";
 import AQIGuide from "./components/AQIGuide";
 import { useTheme } from "./hooks/useTheme";
-import { predictAQI, getErrorMessage } from "./services/api";
+import { predictAQI, fetchForecast, getErrorMessage } from "./services/api";
 
 export default function App() {
   const { theme, toggle } = useTheme();
@@ -12,6 +14,22 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
+  const [forecast, setForecast] = useState(null);
+  const [forecastLoading, setForecastLoading] = useState(false);
+
+  // Called by AQIForm when city changes (to trigger forecast fetch)
+  const handleCityChange = useCallback(async (city) => {
+    setForecast(null);
+    setForecastLoading(true);
+    try {
+      const data = await fetchForecast(city);
+      setForecast(data);
+    } catch {
+      setForecast(null);
+    } finally {
+      setForecastLoading(false);
+    }
+  }, []);
 
   const handlePredict = async (payload) => {
     setLoading(true);
@@ -28,7 +46,6 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <div className="ambient" aria-hidden />
       <div className="page">
         <Header
           view={view}
@@ -40,11 +57,23 @@ export default function App() {
         {view === "predict" ? (
           <div className="layout">
             <div className="main-col">
-              <AQIForm onSubmit={handlePredict} loading={loading} />
+              <AQIForm
+                onSubmit={handlePredict}
+                loading={loading}
+                onAutofill={() => {}}
+                onCityChange={handleCityChange}
+              />
             </div>
             <aside className="side">
               {error && <p className="error">{error}</p>}
               <AQIResult result={result} />
+              {result && result.shap_top && result.shap_top.length > 0 && (
+                <SHAPBreakdown contributions={result.shap_top} />
+              )}
+              <ForecastChart
+                forecast={forecast}
+                loading={forecastLoading}
+              />
             </aside>
           </div>
         ) : (
@@ -53,8 +82,7 @@ export default function App() {
 
         <footer className="footer">
           <p>
-            US EPA AQI scale · Predictions from XGBoost · Not a substitute for
-            official government air quality alerts
+            US EPA AQI scale · Predictions from XGBoost · Weather via OpenWeatherMap · Air quality via WAQI · Not a substitute for official government air quality alerts
           </p>
         </footer>
       </div>
