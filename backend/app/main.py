@@ -81,7 +81,7 @@ async def autofill(city: str = Query(..., min_length=1)) -> AutofillResponse:
 
     # Determine source quality
     weather_ok = any(v is not None for v in weather.values())
-    air_ok = any(v is not None for v in {k: pollutants[k] for k in list(pollutants.keys()) if k != "live_aqi"}.values())
+    air_ok = any(v is not None for v in pollutants.values())
 
     if weather_ok and air_ok:
         source = "full"
@@ -102,7 +102,6 @@ async def autofill(city: str = Query(..., min_length=1)) -> AutofillResponse:
         so2=pollutants.get("so2"),
         co=pollutants.get("co"),
         o3=pollutants.get("o3"),
-        live_aqi=pollutants.get("live_aqi"),
         source=source,
     )
 
@@ -111,7 +110,7 @@ async def autofill(city: str = Query(..., min_length=1)) -> AutofillResponse:
 async def forecast(city: str = Query(..., min_length=1)) -> ForecastResponse:
     """Return a 5-day AQI forecast for a city.
 
-    Uses OWM daily weather forecast + most recent WAQI pollutant levels,
+    Uses OWM daily weather forecast + current OWM pollutant levels,
     passed through the existing XGBoost model. OWM free tier supports 5 days.
     """
     if not is_model_loaded():

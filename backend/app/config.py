@@ -20,4 +20,3 @@ CORS_ORIGINS = [
 
 # External API keys — set in .env, never hardcoded
 OWM_API_KEY: str = os.getenv("OWM_API_KEY", "")
-WAQI_TOKEN: str = os.getenv("WAQI_TOKEN", "")

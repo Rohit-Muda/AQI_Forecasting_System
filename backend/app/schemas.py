@@ -59,7 +59,6 @@ class AutofillResponse(BaseModel):
     so2: Optional[float] = None
     co: Optional[float] = None
     o3: Optional[float] = None
-    live_aqi: Optional[int] = None
     source: str = "none"   # "full" | "partial" | "none"
 
 

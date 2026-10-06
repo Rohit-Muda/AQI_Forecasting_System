@@ -16,7 +16,7 @@ _explainer = None  # shap.TreeExplainer — cached at startup
 
 _TRAINING_DIR = Path(__file__).resolve().parent.parent / "training"
 
-# Human-readable labels for the 18 model feature columns
+# Human-readable labels for the 19 model feature columns
 _FEATURE_LABELS: dict[str, str] = {
     "temperature": "Temperature",
     "humidity": "Humidity",

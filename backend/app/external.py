@@ -1,14 +1,13 @@
-"""External API integrations — OpenWeatherMap (weather) and WAQI (air quality)."""
+"""External API integrations for OpenWeatherMap weather and air quality."""
 
 from __future__ import annotations
 
-import asyncio
 import logging
 from typing import Any
 
 import httpx
 
-from app.config import OWM_API_KEY, WAQI_TOKEN
+from app.config import OWM_API_KEY
 
 logger = logging.getLogger(__name__)
 
@@ -42,39 +41,6 @@ CITY_COORDS: dict[str, tuple[float, float]] = {
     "Talcher": (20.9500, 85.2333),
     "Thiruvananthapuram": (8.5241, 76.9366),
     "Visakhapatnam": (17.6868, 83.2185),
-    "Patna": (25.5941, 85.1376),
-}
-
-# WAQI uses slightly different city name spellings — map where needed
-WAQI_CITY_MAP: dict[str, str] = {
-    "Bengaluru": "bangalore",
-    "Delhi": "delhi",
-    "Mumbai": "mumbai",
-    "Kolkata": "kolkata",
-    "Chennai": "chennai",
-    "Hyderabad": "hyderabad",
-    "Ahmedabad": "ahmedabad",
-    "Chandigarh": "chandigarh",
-    "Jaipur": "jaipur",
-    "Lucknow": "lucknow",
-    "Patna": "patna",
-    "Bhopal": "bhopal",
-    "Amritsar": "amritsar",
-    "Gurugram": "gurgaon",
-    "Srinagar": "srinagar",
-    "Guwahati": "guwahati",
-    "Nagpur": "nagpur",
-    "Visakhapatnam": "visakhapatnam",
-    "Coimbatore": "coimbatore",
-    "Kochi": "kochi",
-    "Ernakulam": "ernakulam",
-    "Thiruvananthapuram": "thiruvananthapuram",
-    "Shillong": "shillong",
-    "Aizawl": "aizawl",
-    "Amaravati": "amaravati",
-    "Jorapokhar": "jorapokhar",
-    "Brajrajnagar": "brajrajnagar",
-    "Talcher": "talcher",
 }
 
 _HTTP_TIMEOUT = 8.0  # seconds per external API call
@@ -128,41 +94,39 @@ async def fetch_weather(city: str) -> dict[str, float | None]:
 
 
 async def fetch_pollutants(city: str) -> dict[str, Any]:
-    """Fetch current air quality from WAQI for a city.
+    """Fetch current air quality from OpenWeatherMap for a city's coordinates.
 
     Returns dict with:
       - pm25, pm10, no2, so2, co, o3: float | None
-      - live_aqi: int | None  (the station-reported AQI)
+
+    OWM documents all component concentrations in μg/m³, matching the model
+    inputs, so values are mapped directly without unit conversion.
     """
-    waqi_name = WAQI_CITY_MAP.get(city, city.lower())
-    if not WAQI_TOKEN:
+    coords = CITY_COORDS.get(city)
+    if not coords or not OWM_API_KEY:
         return _empty_pollutants()
 
+    lat, lon = coords
     async with httpx.AsyncClient() as client:
         data = await _get(
             client,
-            f"https://api.waqi.info/feed/{waqi_name}/",
-            {"token": WAQI_TOKEN},
+            "https://api.openweathermap.org/data/2.5/air_pollution",
+            {"lat": lat, "lon": lon, "appid": OWM_API_KEY},
         )
 
-    if data is None or data.get("status") != "ok":
+    entries = (data or {}).get("list") or []
+    if not entries:
         return _empty_pollutants()
 
-    iaqi = data.get("data", {}).get("iaqi", {})
-    live_aqi_raw = data.get("data", {}).get("aqi")
-
-    def _iaqi(key: str) -> float | None:
-        val = iaqi.get(key, {}).get("v")
-        return _safe(val)
+    components = entries[0].get("components") or {}
 
     return {
-        "pm25": _iaqi("pm25"),
-        "pm10": _iaqi("pm10"),
-        "no2": _iaqi("no2"),
-        "so2": _iaqi("so2"),
-        "co": _iaqi("co"),
-        "o3": _iaqi("o3"),
-        "live_aqi": int(live_aqi_raw) if _safe(live_aqi_raw) is not None else None,
+        "pm25": _safe(components.get("pm2_5")),
+        "pm10": _safe(components.get("pm10")),
+        "no2": _safe(components.get("no2")),
+        "so2": _safe(components.get("so2")),
+        "co": _safe(components.get("co")),
+        "o3": _safe(components.get("o3")),
     }
 
 
@@ -255,5 +219,4 @@ def _empty_pollutants() -> dict[str, Any]:
         "so2": None,
         "co": None,
         "o3": None,
-        "live_aqi": None,
     }
