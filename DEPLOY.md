@@ -49,6 +49,7 @@ Vercel does not run this FastAPI + XGBoost server well; use Render (or Railway) 
    | Key | Value (set after Vercel deploy) |
    |-----|----------------------------------|
    | `CORS_ORIGINS` | `https://your-app.vercel.app` |
+   | `OWM_API_KEY` | Your OpenWeatherMap API key for weather and air-pollution autofill |
 
    For now use a placeholder; update after frontend is live. Multiple origins: comma-separated, no spaces.
 
@@ -74,7 +75,7 @@ Vercel does not run this FastAPI + XGBoost server well; use Render (or Railway) 
 3. **Runtime:** Python 3
 4. **Build Command:** `pip install -r requirements.txt`
 5. **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-6. Add `CORS_ORIGINS` as above.
+6. Add `CORS_ORIGINS` and `OWM_API_KEY` as above.
 
 ---
 
@@ -134,7 +135,10 @@ VITE_API_URL=http://localhost:8000
 
 ```
 CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+OWM_API_KEY=your_openweathermap_api_key_here
 ```
+
+OpenWeatherMap supplies both weather and pollutant readings. WAQI/OpenAQ credentials are not used.
 
 ---
 
