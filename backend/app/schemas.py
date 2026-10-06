@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field, field_validator
+from typing import Optional
 
 
 class PredictRequest(BaseModel):
@@ -24,10 +25,17 @@ class PredictRequest(BaseModel):
         return cleaned
 
 
+class SHAPContribution(BaseModel):
+    feature: str       # human-readable label, e.g. "PM2.5"
+    impact: float      # signed SHAP value
+    percent: float     # absolute % of total impact
+
+
 class PredictResponse(BaseModel):
     predicted_aqi: int
     category: str
     health_advice: str
+    shap_top: list[SHAPContribution] = []
 
 
 class HealthResponse(BaseModel):
@@ -37,3 +45,30 @@ class HealthResponse(BaseModel):
 
 class CitiesResponse(BaseModel):
     cities: list[str]
+
+
+class AutofillResponse(BaseModel):
+    temperature: Optional[float] = None
+    humidity: Optional[float] = None
+    pressure: Optional[float] = None
+    wind_speed: Optional[float] = None
+    rainfall: Optional[float] = None
+    pm25: Optional[float] = None
+    pm10: Optional[float] = None
+    no2: Optional[float] = None
+    so2: Optional[float] = None
+    co: Optional[float] = None
+    o3: Optional[float] = None
+    live_aqi: Optional[int] = None
+    source: str = "none"   # "full" | "partial" | "none"
+
+
+class ForecastDay(BaseModel):
+    date: str          # "YYYY-MM-DD"
+    predicted_aqi: int
+    category: str
+
+
+class ForecastResponse(BaseModel):
+    city: str
+    days: list[ForecastDay]
