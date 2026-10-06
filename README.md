@@ -88,6 +88,6 @@ The frontend example points to `http://localhost:8000`. To retrain, place the CS
 
 ## Deployment
 
-Vercel serves `frontend/`; Render runs the backend from `backend/` using `render.yaml`. Configure `VITE_API_URL` in Vercel and `CORS_ORIGINS` plus `OWM_API_KEY` in Render settings. Keep real credentials in environment settings or ignored `.env` files, never in committed files. Placeholder examples are in `backend/.env.example` and `frontend/.env.example`; deployment steps are in [DEPLOY.md](DEPLOY.md).
+Vercel serves `frontend/`; Render runs the backend from `backend/` using `render.yaml`. Set Vercel's `API_URL` to `https://aqi-forecast-api-gyo3.onrender.com`; configure `CORS_ORIGINS` plus `OWM_API_KEY` in Render settings. Keep real credentials in environment settings or ignored `.env` files, never in committed files. Placeholder examples are in `backend/.env.example` and `frontend/.env.example`; deployment steps are in [DEPLOY.md](DEPLOY.md).
 
 The training CSV is excluded from Git because of its size. The saved model and preprocessor artifacts are committed so deployment does not require the CSV.

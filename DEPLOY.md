@@ -60,11 +60,11 @@ Vercel does not run this FastAPI + XGBoost server well; use Render (or Railway) 
    ```
 
 5. Click **Apply**. Wait for deploy (~5–10 min first time).
-6. Copy your API URL, e.g. `https://aqi-forecast-api.onrender.com`.
+6. Your API URL is `https://aqi-forecast-api-gyo3.onrender.com`.
 7. Test in browser:
 
-   - `https://YOUR-API.onrender.com/` → `"model_loaded": true`
-   - `https://YOUR-API.onrender.com/docs` → Swagger UI
+   - `https://aqi-forecast-api-gyo3.onrender.com/` → `"model_loaded": true`
+   - `https://aqi-forecast-api-gyo3.onrender.com/docs` → Swagger UI
 
 **Note:** Free Render services sleep after ~15 min idle; first request may take 30–60 seconds (cold start).
 
@@ -96,7 +96,7 @@ Vercel does not run this FastAPI + XGBoost server well; use Render (or Railway) 
 
    | Key | Value |
    |-----|--------|
-   | `VITE_API_URL` | `https://YOUR-API.onrender.com` (no trailing slash) |
+   | `API_URL` | `https://aqi-forecast-api-gyo3.onrender.com` (no trailing slash) |
 
 5. Click **Deploy**.
 6. Open your Vercel URL, e.g. `https://aqi-forecast.vercel.app`.
@@ -113,9 +113,9 @@ Vercel does not run this FastAPI + XGBoost server well; use Render (or Railway) 
 
    Use your real Vercel URL. Redeploy if needed (Render may auto-redeploy on env change).
 
-2. In **Vercel** → Project → **Settings** → **Environment Variables** → confirm `VITE_API_URL` points to Render.
+2. In **Vercel** → Project → **Settings** → **Environment Variables** → confirm `API_URL` points to Render.
 
-3. **Redeploy Vercel** after changing `VITE_API_URL` (Vite bakes env vars at build time):
+3. **Redeploy Vercel** after changing `API_URL` (Vite bakes env vars at build time):
 
    - Deployments → ⋮ on latest → **Redeploy**
 
@@ -128,7 +128,7 @@ Vercel does not run this FastAPI + XGBoost server well; use Render (or Railway) 
 **`frontend/.env`**
 
 ```
-VITE_API_URL=http://localhost:8000
+API_URL=http://localhost:8000
 ```
 
 **`backend/.env`**
@@ -146,10 +146,10 @@ OpenWeatherMap supplies both weather and pollutant readings. WAQI/OpenAQ credent
 
 | Issue | Fix |
 |-------|-----|
-| Cities empty / network error | Backend asleep (Render free) — wait 60s and refresh; check `VITE_API_URL` |
+| Cities empty / network error | Backend asleep (Render free) — wait 60s and refresh; check `API_URL` |
 | CORS error in browser console | Add exact Vercel URL to `CORS_ORIGINS` on Render |
 | `model_loaded: false` | `model.pkl` not in repo — run `train.py` and commit `backend/app/model/` |
-| Old API URL after change | Redeploy Vercel after updating `VITE_API_URL` |
+| Old API URL after change | Redeploy Vercel after updating `API_URL` |
 | 404 on Vercel refresh | `vercel.json` rewrites are included — ensure Root Directory is `frontend` |
 
 ---
@@ -160,7 +160,7 @@ OpenWeatherMap supplies both weather and pollutant readings. WAQI/OpenAQ credent
 2. Set **Root Directory** to `backend`.
 3. **Start command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
 4. Add `CORS_ORIGINS` variable.
-5. Use Railway public URL as `VITE_API_URL` on Vercel.
+5. Use Railway public URL as `API_URL` on Vercel.
 
 ---
 
@@ -169,6 +169,6 @@ OpenWeatherMap supplies both weather and pollutant readings. WAQI/OpenAQ credent
 - [ ] Model files committed (`model.pkl`, `preprocessor.pkl`)
 - [ ] Code on GitHub
 - [ ] Render backend live, `/` shows `model_loaded: true`
-- [ ] Vercel frontend deployed with `VITE_API_URL`
+- [ ] Vercel frontend deployed with `API_URL`
 - [ ] `CORS_ORIGINS` includes Vercel URL
 - [ ] Live prediction works
